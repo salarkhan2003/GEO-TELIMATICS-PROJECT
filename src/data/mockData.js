@@ -44,8 +44,8 @@ export const mockProjects = [
 
 // Generate additional projects programmatically for demo
 const statuses = ['Active', 'Completed', 'Pending'];
-const projectTypes = ['GeoSurvey', 'Mining', 'Construction', 'Infrastructure', 'Environmental'];
-const suffixes = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Prime'];
+const projectTypes = ['GeoSurvey', 'Mining', 'Construction', 'Infrastructure', 'Environmental', 'Urban', 'Rural'];
+const suffixes = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Prime', 'Pro', 'Max', 'Plus', 'Advanced', 'Standard'];
 
 function getRandomInRange(min, max) {
   return Math.random() * (max - min) + min;
@@ -57,14 +57,15 @@ function getRandomDate() {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toISOString();
 }
 
-// Generate additional projects to reach 100 total (manageable size)
-for (let i = 6; i <= 100; i++) {
+// Generate additional projects to reach 5000 total
+for (let i = 6; i <= 5000; i++) {
   const projectType = projectTypes[Math.floor(Math.random() * projectTypes.length)];
   const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+  const randomNum = Math.floor(Math.random() * 9999) + 1;
   
   mockProjects.push({
     id: i,
-    projectName: `${projectType}-${suffix}-${i.toString().padStart(4, '0')}`,
+    projectName: `${projectType}-${suffix}-${randomNum.toString().padStart(4, '0')}`,
     latitude: parseFloat(getRandomInRange(6, 37).toFixed(6)),
     longitude: parseFloat(getRandomInRange(68, 98).toFixed(6)),
     status: statuses[Math.floor(Math.random() * statuses.length)],
@@ -72,6 +73,6 @@ for (let i = 6; i <= 100; i++) {
   });
 }
 
-export const generateMockData = (count = 100) => {
+export const generateMockData = (count = 5000) => {
   return mockProjects.slice(0, Math.min(count, mockProjects.length));
 };
