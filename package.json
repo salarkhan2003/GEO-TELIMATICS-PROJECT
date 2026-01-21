@@ -4,12 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 3000 --force",
-    "build": "vite build --force",
+    "dev": "vite --port 3000",
+    "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "server": "json-server --watch db.json --port 3001",
-    "vercel-build": "vite build --force",
     "test-data": "node test-data.js"
   },
   "dependencies": {

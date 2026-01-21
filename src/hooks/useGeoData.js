@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { generateMockData } from '../data/mockData';
 
 const useGeoData = () => {
   const [data, setData] = useState([]);
@@ -9,43 +10,47 @@ const useGeoData = () => {
   const [sortModel, setSortModel] = useState([]);
   const debounceRef = useRef(null);
 
-  // Fetch data from API (json-server locally, serverless in production)
+  // Load data (try API first, fallback to mock data)
   useEffect(() => {
-    const fetchData = async () => {
+    const loadData = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        console.log('Fetching data from API...');
-        
-        const response = await fetch('/api/projects');
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        // Try API first (for development with json-server)
+        try {
+          console.log('Attempting to fetch from API...');
+          const response = await fetch('/api/projects');
+          
+          if (response.ok) {
+            const result = await response.json();
+            const projects = Array.isArray(result) ? result : result.projects || [];
+            
+            if (projects.length > 0) {
+              console.log(`Successfully loaded ${projects.length} projects from API`);
+              setData(projects);
+              return;
+            }
+          }
+        } catch (apiError) {
+          console.log('API not available, using mock data');
         }
         
-        const result = await response.json();
-        console.log('API Response received:', result.length || result.projects?.length || 'Unknown count');
-        
-        // Handle both direct array and object with projects property
-        const projects = Array.isArray(result) ? result : result.projects || [];
-        
-        if (projects.length === 0) {
-          throw new Error('No projects data received from API');
-        }
-        
-        console.log(`Successfully loaded ${projects.length} projects from API`);
-        setData(projects);
+        // Fallback to mock data (for production deployment)
+        console.log('Loading mock data...');
+        const mockProjects = generateMockData(5000);
+        console.log(`Generated ${mockProjects.length} mock projects`);
+        setData(mockProjects);
         
       } catch (err) {
-        console.error('API fetch error:', err);
+        console.error('Data loading error:', err);
         setError(`Failed to load data: ${err.message}`);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    loadData();
   }, []);
 
   // Debounce filter text
