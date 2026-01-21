@@ -38,8 +38,14 @@ const useGeoData = () => {
         
         // Fallback to pre-generated mock data (for production deployment)
         console.log('Loading pre-generated mock data...');
+        
+        // Ensure we have mock data
+        if (!mockProjects || mockProjects.length === 0) {
+          throw new Error('Mock data not available');
+        }
+        
         console.log(`Loaded ${mockProjects.length} mock projects`);
-        setData(mockProjects);
+        setData([...mockProjects]); // Create a copy to avoid reference issues
         
       } catch (err) {
         console.error('Data loading error:', err);
