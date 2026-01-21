@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* Custom marker animations */
+.custom-svg-marker {
+  transition: all 0.3s ease;
+}
+
+.custom-svg-marker:hover {
+  transform: scale(1.1) !important;
+  z-index: 1000;
+}
+
+.selected-marker {
+  z-index: 1000 !important;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Enhanced popup styling */
+.custom-popup .leaflet-popup-content-wrapper {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.custom-popup .leaflet-popup-tip {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Cluster icon animations */
+.custom-cluster-icon {
+  transition: all 0.3s ease;
+}
+
+.custom-cluster-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Row highlighting */
+.highlighted-row {
+  background-color: rgba(25, 118, 210, 0.12) !important;
+  transform: translateX(6px) !important;
+  box-shadow: 6px 0 16px rgba(25, 118, 210, 0.25) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Glassmorphism scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(25, 118, 210, 0.3);
+  border-radius: 4px;
+  backdrop-filter: blur(10px);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(25, 118, 210, 0.5);
+}
