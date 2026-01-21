@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { mockProjects } from '../data/mockData';
 
 const useGeoData = () => {
   const [data, setData] = useState([]);
@@ -10,27 +9,43 @@ const useGeoData = () => {
   const [sortModel, setSortModel] = useState([]);
   const debounceRef = useRef(null);
 
-  // Use static data for reliable deployment
+  // Fetch data from API (json-server locally, serverless in production)
   useEffect(() => {
-    const loadData = () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        console.log('Loading static mock data with', mockProjects.length, 'projects');
+        setError(null);
         
-        // Simulate loading delay for better UX
-        setTimeout(() => {
-          setData(mockProjects);
-          setLoading(false);
-        }, 1000);
+        console.log('Fetching data from API...');
+        
+        const response = await fetch('/api/projects');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('API Response received:', result.length || result.projects?.length || 'Unknown count');
+        
+        // Handle both direct array and object with projects property
+        const projects = Array.isArray(result) ? result : result.projects || [];
+        
+        if (projects.length === 0) {
+          throw new Error('No projects data received from API');
+        }
+        
+        console.log(`Successfully loaded ${projects.length} projects from API`);
+        setData(projects);
         
       } catch (err) {
-        console.error('Error loading data:', err);
-        setError(err.message);
+        console.error('API fetch error:', err);
+        setError(`Failed to load data: ${err.message}`);
+      } finally {
         setLoading(false);
       }
     };
 
-    loadData();
+    fetchData();
   }, []);
 
   // Debounce filter text

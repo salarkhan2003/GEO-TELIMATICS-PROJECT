@@ -24,12 +24,18 @@ A high-performance React-based geo data dashboard that visualizes spatial and ta
 
 ## 🏗️ Architecture Decisions
 
-### Why MUI DataGrid (Free Version)?
-- **Virtualization**: Handles 5000+ rows efficiently with built-in row virtualization
-- **Performance**: Optimized rendering prevents UI lag during scrolling and filtering
-- **Features**: Built-in sorting, filtering, pagination, and export functionality
-- **No License Issues**: Uses the free version to avoid licensing complications
-- **Production Ready**: Suitable for production use without additional costs
+### Why Server-Based API Approach?
+- **Assignment Requirement**: "Fetch paginated data from a mock API (provided JSON)"
+- **Professional Skills**: Demonstrates API integration and async data handling
+- **Real-world Simulation**: Mimics actual production applications
+- **Error Handling**: Shows proper loading states and error management
+- **Scalability**: Easy to replace with real backend API later
+
+### Development vs Production API
+- **Development**: Uses json-server with db.json (5000 projects)
+- **Production**: Uses Vercel serverless function generating 5000 projects
+- **Consistent Interface**: Both return same data structure
+- **Seamless Transition**: No code changes needed between environments
 
 ### Why Client-Side Data Processing?
 - **Mock API Simplicity**: Matches assignment requirements with json-server
