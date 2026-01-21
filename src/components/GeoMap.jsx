@@ -47,6 +47,24 @@ const MapController = ({ selectedId, data, onMarkerClick }) => {
   const markersRef = useRef(null);
   const markerInstancesRef = useRef(new Map());
 
+  // Force map to resize when container changes
+  useEffect(() => {
+    const resizeMap = () => {
+      if (map) {
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 100);
+      }
+    };
+
+    resizeMap();
+    window.addEventListener('resize', resizeMap);
+    
+    return () => {
+      window.removeEventListener('resize', resizeMap);
+    };
+  }, [map]);
+
   useEffect(() => {
     if (selectedId && data.length > 0) {
       const selectedProject = data.find(p => p.id === selectedId);
@@ -228,10 +246,13 @@ const GeoMap = ({
       height: '100%', 
       width: '100%',
       position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
       '& .leaflet-container': {
-        height: '100%',
-        width: '100%',
+        height: '100% !important',
+        width: '100% !important',
         borderRadius: '0 0 8px 8px',
+        flex: 1,
       },
       '& .custom-popup .leaflet-popup-content-wrapper': {
         background: 'transparent',
@@ -259,11 +280,22 @@ const GeoMap = ({
     }}>
       <MapContainer
         bounds={indiaBounds}
-        style={{ height: '100%', width: '100%' }}
+        style={{ 
+          height: '100%', 
+          width: '100%',
+          flex: 1,
+          minHeight: '400px',
+        }}
         maxBounds={indiaBounds}
         maxBoundsViscosity={1.0}
         zoomControl={true}
         scrollWheelZoom={true}
+        whenCreated={(mapInstance) => {
+          // Force resize after creation
+          setTimeout(() => {
+            mapInstance.invalidateSize();
+          }, 100);
+        }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

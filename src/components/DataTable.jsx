@@ -69,6 +69,15 @@ const CustomToolbar = ({
                 background: 'rgba(255,255,255,0.9)',
                 backdropFilter: 'blur(10px)',
                 transition: 'all 0.3s ease',
+                color: '#1976d2',
+                '& input': {
+                  color: '#1976d2',
+                  fontWeight: 500,
+                },
+                '& input::placeholder': {
+                  color: '#1976d2',
+                  opacity: 0.7,
+                },
                 '&:hover': {
                   transform: 'translateY(-1px)',
                   boxShadow: '0 4px 20px rgba(25,118,210,0.2)',
@@ -203,13 +212,14 @@ const DataTable = ({
       field: 'projectName',
       headerName: 'Project Name',
       flex: 1,
-      minWidth: 200,
+      minWidth: 220,
       renderCell: (params) => (
         <Typography 
           variant="body2" 
           sx={{ 
             fontWeight: 600,
             transition: 'all 0.2s ease',
+            color: 'text.primary',
           }}
         >
           {params.value}
@@ -219,7 +229,7 @@ const DataTable = ({
     {
       field: 'latitude',
       headerName: 'Latitude',
-      width: 120,
+      width: 130,
       type: 'number',
       valueFormatter: (value) => `${value?.toFixed(6)}°`,
       renderCell: (params) => (
@@ -228,14 +238,14 @@ const DataTable = ({
           size="small"
           variant="outlined"
           color="primary"
-          sx={{ fontSize: '0.75rem' }}
+          sx={{ fontSize: '0.75rem', fontWeight: 500 }}
         />
       ),
     },
     {
       field: 'longitude',
       headerName: 'Longitude',
-      width: 120,
+      width: 130,
       type: 'number',
       valueFormatter: (value) => `${value?.toFixed(6)}°`,
       renderCell: (params) => (
@@ -244,14 +254,14 @@ const DataTable = ({
           size="small"
           variant="outlined"
           color="secondary"
-          sx={{ fontSize: '0.75rem' }}
+          sx={{ fontSize: '0.75rem', fontWeight: 500 }}
         />
       ),
     },
     {
       field: 'status',
       headerName: 'Status',
-      width: 120,
+      width: 130,
       renderCell: (params) => {
         const getStatusColor = (status) => {
           switch (status) {
@@ -280,7 +290,7 @@ const DataTable = ({
     {
       field: 'lastUpdated',
       headerName: 'Last Updated',
-      width: 150,
+      width: 160,
       type: 'date',
       valueGetter: (value) => new Date(value),
       valueFormatter: (value) => value?.toLocaleDateString('en-US', {
@@ -293,6 +303,7 @@ const DataTable = ({
           color: 'text.secondary',
           fontFamily: 'monospace',
           fontSize: '0.75rem',
+          fontWeight: 500,
         }}>
           {params.value?.toLocaleDateString('en-US', {
             year: 'numeric',
@@ -356,6 +367,7 @@ const DataTable = ({
         }}
         sx={{
           border: 'none',
+          height: '100%',
           '& .MuiDataGrid-cell': {
             borderColor: 'rgba(224, 224, 224, 0.5)',
             '&:focus': {
@@ -386,15 +398,59 @@ const DataTable = ({
             },
           },
           '& .MuiDataGrid-columnHeader': {
-            backgroundColor: 'rgba(248, 250, 252, 0.8)',
-            backdropFilter: 'blur(10px)',
+            backgroundColor: '#1976d2',
+            color: 'white',
             fontWeight: 700,
             fontSize: '0.9rem',
+            '& .MuiDataGrid-columnHeaderTitle': {
+              color: 'white',
+              fontWeight: 700,
+            },
+            '& .MuiDataGrid-iconButtonContainer': {
+              color: 'white',
+            },
+            '& .MuiDataGrid-sortIcon': {
+              color: 'white',
+            },
+            '& .MuiDataGrid-menuIcon': {
+              color: 'white',
+            },
+          },
+          '& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer': {
+            color: 'white',
           },
           '& .MuiDataGrid-footerContainer': {
             borderTop: '1px solid rgba(224, 224, 224, 0.5)',
-            backgroundColor: 'rgba(248, 250, 252, 0.8)',
+            backgroundColor: '#1976d2',
             backdropFilter: 'blur(10px)',
+            color: 'white',
+            '& .MuiTablePagination-root': {
+              color: 'white',
+            },
+            '& .MuiTablePagination-selectLabel': {
+              color: 'white',
+            },
+            '& .MuiTablePagination-displayedRows': {
+              color: 'white',
+            },
+            '& .MuiTablePagination-select': {
+              color: 'white',
+            },
+            '& .MuiTablePagination-selectIcon': {
+              color: 'white',
+            },
+            '& .MuiIconButton-root': {
+              color: 'white',
+            },
+            '& .MuiIconButton-root.Mui-disabled': {
+              color: 'rgba(255, 255, 255, 0.5)',
+            },
+          },
+          '& .MuiDataGrid-virtualScroller': {
+            backgroundColor: 'transparent',
+          },
+          '& .MuiDataGrid-main': {
+            backgroundColor: 'transparent',
           }
         }}
       />
