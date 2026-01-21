@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vasundharaa Geo Dashboard - Test</title>
+</head>
+<body>
+    <h1>Vasundharaa Geo Dashboard</h1>
+    <p>If you can see this page, the deployment is working.</p>
+    <p>Testing API: <span id="api-status">Loading...</span></p>
+    
+    <script>
+        fetch('/api/projects')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('api-status').textContent = 
+                    `API working! Received ${data.length || data.projects?.length || 0} projects`;
+            })
+            .catch(error => {
+                document.getElementById('api-status').textContent = 
+                    `API Error: ${error.message}`;
+            });
+    </script>
+</body>
+</html>

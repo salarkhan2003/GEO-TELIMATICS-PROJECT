@@ -9,18 +9,39 @@ const useGeoData = () => {
   const [sortModel, setSortModel] = useState([]);
   const debounceRef = useRef(null);
 
-  // Fetch data from json-server
+  // Fetch data from json-server or serverless function
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/projects');
+        setError(null);
+        
+        // Try production API first, fallback to development
+        const apiUrl = process.env.NODE_ENV === 'production' 
+          ? '/api/projects' 
+          : '/api/projects';
+          
+        console.log('Fetching from:', apiUrl);
+        
+        const response = await fetch(apiUrl);
+        
         if (!response.ok) {
-          throw new Error('Failed to fetch data');
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
         const result = await response.json();
-        setData(result);
+        console.log('Data received:', result.length || result.projects?.length || 'Unknown count');
+        
+        // Handle both direct array and object with projects property
+        const projects = Array.isArray(result) ? result : result.projects || [];
+        
+        if (projects.length === 0) {
+          throw new Error('No projects data received');
+        }
+        
+        setData(projects);
       } catch (err) {
+        console.error('Fetch error:', err);
         setError(err.message);
       } finally {
         setLoading(false);
