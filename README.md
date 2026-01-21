@@ -1,4 +1,5 @@
 # Vasundharaa Geo Dashboard
+![Uploading image.png…]()
 
 A high-performance React-based geo data dashboard that visualizes spatial and tabular data with seamless synchronization between data table and interactive map.
 

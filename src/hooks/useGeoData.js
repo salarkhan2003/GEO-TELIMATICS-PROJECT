@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { generateMockData } from '../data/mockData';
+import { mockProjects } from '../data/mockData';
 
 const useGeoData = () => {
   const [data, setData] = useState([]);
@@ -36,10 +36,9 @@ const useGeoData = () => {
           console.log('API not available, using mock data');
         }
         
-        // Fallback to mock data (for production deployment)
-        console.log('Loading mock data...');
-        const mockProjects = generateMockData(5000);
-        console.log(`Generated ${mockProjects.length} mock projects`);
+        // Fallback to pre-generated mock data (for production deployment)
+        console.log('Loading pre-generated mock data...');
+        console.log(`Loaded ${mockProjects.length} mock projects`);
         setData(mockProjects);
         
       } catch (err) {

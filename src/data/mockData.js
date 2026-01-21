@@ -42,6 +42,9 @@ function generateProjects(count) {
   return projects;
 }
 
+// Export the generator function for dynamic use
+export const generateMockData = generateProjects;
+
 // Generate exactly 5000 projects
 export const mockProjects = generateProjects(5000);
 
