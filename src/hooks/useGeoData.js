@@ -10,44 +10,27 @@ const useGeoData = () => {
   const [sortModel, setSortModel] = useState([]);
   const debounceRef = useRef(null);
 
-  // Fetch data from API or use static data
+  // Use static data for reliable deployment
   useEffect(() => {
-    const fetchData = async () => {
+    const loadData = () => {
       try {
         setLoading(true);
-        setError(null);
+        console.log('Loading static mock data with', mockProjects.length, 'projects');
         
-        // Try API first, fallback to static data
-        try {
-          const response = await fetch('/api/projects');
-          if (response.ok) {
-            const result = await response.json();
-            const projects = Array.isArray(result) ? result : result.projects || [];
-            if (projects.length > 0) {
-              console.log('Using API data with', projects.length, 'projects');
-              setData(projects);
-              return;
-            }
-          }
-        } catch (apiError) {
-          console.log('API not available, using static data');
-        }
-        
-        // Use static mock data as fallback
-        console.log('Using static mock data with', mockProjects.length, 'projects');
-        setData(mockProjects);
+        // Simulate loading delay for better UX
+        setTimeout(() => {
+          setData(mockProjects);
+          setLoading(false);
+        }, 1000);
         
       } catch (err) {
         console.error('Error loading data:', err);
         setError(err.message);
-        // Even on error, try to use static data
-        setData(mockProjects);
-      } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    loadData();
   }, []);
 
   // Debounce filter text
