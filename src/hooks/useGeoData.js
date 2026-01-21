@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { mockProjects } from '../data/mockData';
 
 const useGeoData = () => {
   const [data, setData] = useState([]);
@@ -9,40 +10,38 @@ const useGeoData = () => {
   const [sortModel, setSortModel] = useState([]);
   const debounceRef = useRef(null);
 
-  // Fetch data from json-server or serverless function
+  // Fetch data from API or use static data
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        // Try production API first, fallback to development
-        const apiUrl = process.env.NODE_ENV === 'production' 
-          ? '/api/projects' 
-          : '/api/projects';
-          
-        console.log('Fetching from:', apiUrl);
-        
-        const response = await fetch(apiUrl);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        // Try API first, fallback to static data
+        try {
+          const response = await fetch('/api/projects');
+          if (response.ok) {
+            const result = await response.json();
+            const projects = Array.isArray(result) ? result : result.projects || [];
+            if (projects.length > 0) {
+              console.log('Using API data with', projects.length, 'projects');
+              setData(projects);
+              return;
+            }
+          }
+        } catch (apiError) {
+          console.log('API not available, using static data');
         }
         
-        const result = await response.json();
-        console.log('Data received:', result.length || result.projects?.length || 'Unknown count');
+        // Use static mock data as fallback
+        console.log('Using static mock data with', mockProjects.length, 'projects');
+        setData(mockProjects);
         
-        // Handle both direct array and object with projects property
-        const projects = Array.isArray(result) ? result : result.projects || [];
-        
-        if (projects.length === 0) {
-          throw new Error('No projects data received');
-        }
-        
-        setData(projects);
       } catch (err) {
-        console.error('Fetch error:', err);
+        console.error('Error loading data:', err);
         setError(err.message);
+        // Even on error, try to use static data
+        setData(mockProjects);
       } finally {
         setLoading(false);
       }
